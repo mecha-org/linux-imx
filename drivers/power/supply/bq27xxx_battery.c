@@ -934,11 +934,9 @@ static struct bq27xxx_dm_reg bq27426_dm_regs[] = {
 	[BQ27XXX_DM_TERMINATE_VOLTAGE] = { 82, 10, 2, 2500,  3700 },
 };
 
-#if 0 /* not yet tested */
+
 #define bq27441_dm_regs bq27421_dm_regs
-#else
-#define bq27441_dm_regs NULL
-#endif
+
 
 #if 0 /* not yet tested */
 static struct bq27xxx_dm_reg bq27621_dm_regs[] = {
@@ -1477,15 +1475,20 @@ static void bq27xxx_battery_settings(struct bq27xxx_device_info *di)
 	struct power_supply_battery_info *info;
 	unsigned int min, max;
 
-	if (power_supply_get_battery_info(di->bat, &info) < 0)
-		return;
+	printk("BAT_DEBUG : %s, %s, %d : Enter",__FILE__, __func__, __LINE__);
+	if (power_supply_get_battery_info(di->bat, &info) < 0) {
+		printk("BAT_DEBUG : %s, %s, %d : Error in get_bat_info",__FILE__, __func__, __LINE__);
+ 		return;
+	}
 
 	if (!di->dm_regs) {
+		printk("BAT_DEBUG : %s, %s, %d : data memory update error",__FILE__, __func__, __LINE__);
 		dev_warn(di->dev, "data memory update not supported for chip\n");
 		return;
 	}
 
 	if (info->energy_full_design_uwh != info->charge_full_design_uah) {
+		printk("BAT_DEBUG : %s, %s, %d : error",__FILE__, __func__, __LINE__);
 		if (info->energy_full_design_uwh == -EINVAL)
 			dev_warn(di->dev, "missing battery:energy-full-design-microwatt-hours\n");
 		else if (info->charge_full_design_uah == -EINVAL)
@@ -1495,6 +1498,7 @@ static void bq27xxx_battery_settings(struct bq27xxx_device_info *di)
 	/* assume min == 0 */
 	max = di->dm_regs[BQ27XXX_DM_DESIGN_ENERGY].max;
 	if (info->energy_full_design_uwh > max * 1000) {
+		printk("BAT_DEBUG : %s, %s, %d : error",__FILE__, __func__, __LINE__);
 		dev_err(di->dev, "invalid battery:energy-full-design-microwatt-hours %d\n",
 			info->energy_full_design_uwh);
 		info->energy_full_design_uwh = -EINVAL;
@@ -1503,6 +1507,7 @@ static void bq27xxx_battery_settings(struct bq27xxx_device_info *di)
 	/* assume min == 0 */
 	max = di->dm_regs[BQ27XXX_DM_DESIGN_CAPACITY].max;
 	if (info->charge_full_design_uah > max * 1000) {
+		printk("BAT_DEBUG : %s, %s, %d : error",__FILE__, __func__, __LINE__);
 		dev_err(di->dev, "invalid battery:charge-full-design-microamp-hours %d\n",
 			info->charge_full_design_uah);
 		info->charge_full_design_uah = -EINVAL;
@@ -1513,6 +1518,7 @@ static void bq27xxx_battery_settings(struct bq27xxx_device_info *di)
 	if ((info->voltage_min_design_uv < min * 1000 ||
 	     info->voltage_min_design_uv > max * 1000) &&
 	     info->voltage_min_design_uv != -EINVAL) {
+		printk("BAT_DEBUG : %s, %s, %d : error",__FILE__, __func__, __LINE__);
 		dev_err(di->dev, "invalid battery:voltage-min-design-microvolt %d\n",
 			info->voltage_min_design_uv);
 		info->voltage_min_design_uv = -EINVAL;
@@ -1522,6 +1528,7 @@ static void bq27xxx_battery_settings(struct bq27xxx_device_info *di)
 	     info->charge_full_design_uah != -EINVAL) ||
 	     info->voltage_min_design_uv  != -EINVAL)
 		bq27xxx_battery_set_config(di, info);
+		printk("BAT_DEBUG : %s, %s, %d : error",__FILE__, __func__, __LINE__);
 }
 
 /*
