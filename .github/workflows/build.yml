@@ -1,0 +1,72 @@
+name: mecha-comet-m kernel build
+
+on:
+  push:
+    branches:
+      - main
+      - lf-6.1.y
+
+env:
+  ARCH: "arm64"
+  CROSS_COMPILE: "/usr/bin/aarch64-linux-gnu-"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Clone Repo
+        run: git clone https://github.com/chiragp-mecha/linux-imx.git
+
+      - name: Set up environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu openssh-client libncurses-dev flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf bc
+
+      - name: Configure kernel
+        working-directory: ./linux-imx
+        run: cp arch/arm64/configs/mecha_comet_m_gen1.config .config
+
+      - name: Build kernel
+        working-directory: ./linux-imx
+        run: make -j$(nproc)
+
+      - name: Make Modules
+        working-directory: ./linux-imx
+        run: make modules
+
+      - name: List files Recursively
+        working-directory: ./linux-imx
+        run: ls -R
+
+        # we need to release files from
+        # linux-imx/arch/arm64/boot/Image
+        # linux-imx/arch/arm64/boot/dts/freescale/fsl-imx8mq-mecha-comet-m.dtb
+
+      - name: Upload kernel
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            ./linux-imx/arch/arm64/boot/Image
+            ./linux-imx/arch/arm64/boot/dts/freescale/imx8mm-mecha-comet-m-gen1*
+
+  #  Release the kernel Artifact
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download kernel
+        uses: actions/download-artifact@v4
+
+      - name: List files
+        run: ls -R
+
+      - name: Release kernel
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./artifact/*
+          # token: ${{ secrets.RELEASE_TOKEN }}
+          tag_name: "v1.0.${{ github.run_number }}"
