@@ -38,6 +38,18 @@
 		pinctrl-0 = <&pinctrl_gpios>;
 	};
 	
+	function_button: Function-Button {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_function_btn_gpio>;
+
+		btn1 {
+			label = "Function-Button";
+			gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
+			wakeup-source;
+			linux,code = <KEY_FN_1>;
+		};
+	};
 
 	backlight-dsi {
 		status = "okay";
@@ -380,7 +392,12 @@
 		>;
 	};
 
-	
+	pinctrl_function_btn_gpio: gpiogrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12		0x19
+		>;
+	};
+
 	pinctrl_fec1: fec1grp {
 	        fsl,pins = <
 	                MX8MM_IOMUXC_ENET_MDC_ENET1_MDC                 0x3
