@@ -1240,6 +1240,9 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 		usleep_range(5000, 6000);
 		gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
 		msleep(300);
+
+		gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
+		
 	}
 
 	input = devm_input_allocate_device(&client->dev);
