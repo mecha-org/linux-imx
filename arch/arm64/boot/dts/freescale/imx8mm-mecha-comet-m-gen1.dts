@@ -118,6 +118,27 @@
 	status = "okay";
 };
 
+&fec1 {
+       pinctrl-names = "default";
+       pinctrl-0 = <&pinctrl_fec1>;
+       phy-mode = "rgmii-id";
+       phy-handle = <&ethphy0>;
+       fsl,magic-packet;
+       status = "okay";
+
+       mdio {
+               #address-cells = <1>;
+               #size-cells = <0>;
+
+               ethphy0: ethernet-phy@4 {
+                       compatible = "ethernet-phy-ieee802.3-c22";
+                       reg = <4>;
+                       at803x,eee-disabled;
+                       at803x,vddio-1p8v;
+               };
+       };
+};
+
 &i2c3 {
 	clock-frequency = <100000>;
 	pinctrl-names = "default";
@@ -230,4 +251,24 @@
 			MX8MM_IOMUXC_SAI3_TXD_SAI3_TX_DATA0	0xd6
 		>;
 	};
+
+	pinctrl_fec1: fec1grp {
+	    fsl,pins = <
+	        MX8MM_IOMUXC_ENET_MDC_ENET1_MDC                 0x3
+	        MX8MM_IOMUXC_ENET_MDIO_ENET1_MDIO               0x3
+	        MX8MM_IOMUXC_ENET_TD3_ENET1_RGMII_TD3           0x1f
+	        MX8MM_IOMUXC_ENET_TD2_ENET1_RGMII_TD2           0x1f
+	        MX8MM_IOMUXC_ENET_TD1_ENET1_RGMII_TD1           0x1f
+	        MX8MM_IOMUXC_ENET_TD0_ENET1_RGMII_TD0           0x1f
+	        MX8MM_IOMUXC_ENET_RD3_ENET1_RGMII_RD3           0x91
+	        MX8MM_IOMUXC_ENET_RD2_ENET1_RGMII_RD2           0x91
+	        MX8MM_IOMUXC_ENET_RD1_ENET1_RGMII_RD1           0x91
+	        MX8MM_IOMUXC_ENET_RD0_ENET1_RGMII_RD0           0x91
+	        MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC           0x1f
+	        MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC           0x91
+	        MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL     0x91
+	        MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL     0x1f
+	        MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7               0x19
+	        >;
+    };
 };
