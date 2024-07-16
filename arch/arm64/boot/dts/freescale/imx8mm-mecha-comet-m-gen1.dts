@@ -91,6 +91,18 @@
 	status = "okay";
 };
 
+&pwm1 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_mkbus2_pwm>;
+        status = "okay";
+};
+
+&pwm2 {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_mkbus1_pwm>;
+        status = "okay";
+};
+
 &pwm3 {
 	#pwm-cells = <2>;
         pinctrl-names = "default";
@@ -310,6 +322,18 @@
 
 &iomuxc {
 
+	pinctrl_mkbus1_pwm: mkbus1pwm {
+		fsl,pins = <
+			MX8MM_IOMUXC_SPDIF_RX_PWM2_OUT			0x06
+		>;
+	};
+
+	pinctrl_mkbus2_pwm: mkbus2pwm {
+		fsl,pins = <
+			MX8MM_IOMUXC_GPIO1_IO01_PWM1_OUT		0x06
+		>;
+	};
+
 	pinctrl_pwm3: pwm3grp {
 		fsl,pins = <
 			MX8MM_IOMUXC_SPDIF_TX_PWM3_OUT		0x06
@@ -425,3 +449,4 @@
 	};
 
 };
+
