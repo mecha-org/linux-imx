@@ -1,0 +1,60 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright 2019 NXP
+ */
+
+/dts-v1/;
+
+#include "imx8mm-mecha.dts"
+
+/ {
+
+	backlight-dsi {
+		status = "okay";
+		compatible = "pwm-backlight";
+		pwms = <&pwm3 0 5000000>;
+		brightness-levels = <0 255>;
+		num-interpolated-steps = <255>;
+		default-brightness-level = <250>;
+	};
+
+};
+
+&lcdif {
+	status = "okay";
+};
+
+&pwm3 {
+	#pwm-cells = <2>;
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_pwm3>;
+        status = "okay";
+};
+
+&mipi_dsi {
+        status = "okay";
+        panel_ep: panel@0 {
+                compatible = "sitronix,st7701s";
+                reg = <0>;
+                reset-gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+                dsi-lanes = <2>;
+                video-mode = <2>;       /* 0: burst mode
+                                         * 1: non-burst mode with sync event
+                                         * 2: non-burst mode with sync pulse
+                                         */
+                panel-width-mm = <60>;
+                panel-height-mm = <60>;
+                status = "okay";
+        };
+};
+
+
+&iomuxc {
+
+	pinctrl_pwm3: pwm3grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SPDIF_TX_PWM3_OUT		0x06
+		>;
+	};
+
+};
