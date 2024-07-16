@@ -66,6 +66,29 @@
 		touchscreen-size-y = <480>;
 		status = "okay";
 	};
+
+	ov5640_mipi: ov5640_mipi@3c {
+		compatible = "ovti,ov5640_mipi";
+		reg = <0x3c>;
+		status = "okay";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_csi_pwn>, <&pinctrl_csi_rst>;
+		clocks = <&clk IMX8MM_CLK_CLKO1>;
+		clock-names = "csi_mclk";
+		assigned-clocks = <&clk IMX8MM_CLK_CLKO1>;
+		assigned-clock-parents = <&clk IMX8MM_CLK_24M>;
+		assigned-clock-rates = <24000000>;
+		csi_id = <0>;
+		pwn-gpios = <&gpio3 20 GPIO_ACTIVE_HIGH>;
+		rst-gpios = <&gpio3 19 GPIO_ACTIVE_HIGH>;
+		mclk = <24000000>;
+		mclk_source = <0>;
+		port {
+			ov5640_mipi1_ep: endpoint {
+				remote-endpoint = <&mipi1_sensor_ep>;
+			};
+		};
+	};
 };
 
 &iomuxc {
@@ -87,6 +110,19 @@
 		fsl,pins = <
 			MX8MM_IOMUXC_SAI1_TXC_GPIO4_IO11        0x19
 			MX8MM_IOMUXC_SAI5_RXD0_GPIO3_IO21       0x19
+		>;
+	};
+
+	pinctrl_csi_pwn: csi_pwn_grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SAI5_RXC_GPIO3_IO20	0x19
+		>;
+	};
+
+	pinctrl_csi_rst: csi_rst_grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SAI5_RXFS_GPIO3_IO19		0x19
+			MX8MM_IOMUXC_GPIO1_IO14_CCMSRCGPCMIX_CLKO1      0x59
 		>;
 	};
 
