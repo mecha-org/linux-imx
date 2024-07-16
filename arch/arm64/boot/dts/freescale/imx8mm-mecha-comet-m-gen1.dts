@@ -9,6 +9,48 @@
 
 / {
 
+	leds {
+		led_wlan: wlan {
+			label = "wlan";
+			gpios = <&gpio1 9 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "rfkill0";
+		};
+
+		led_red: red_led {
+			label = "red-led";
+			gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>;
+		};
+
+		led_green: green_led {
+			label = "green-led";
+			gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>;
+		};
+
+		led_blue: red_blue {
+			label = "blue-led";
+			gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;
+		};
+	};
+	
+	function_button: Function-Button {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_function_btn_gpio>;
+
+		btn1 {
+			label = "Function-Button";
+			gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;
+			wakeup-source;
+			linux,code = <KEY_FN_1>;
+		};
+	};
+
+	gpio_init {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_gpios>;
+	};
+
 	backlight-dsi {
 		status = "okay";
 		compatible = "pwm-backlight";
@@ -271,4 +313,35 @@
 	        MX8MM_IOMUXC_GPIO1_IO07_GPIO1_IO7               0x19
 	        >;
     };
+
+	pinctrl_function_btn_gpio: gpiogrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12		0x19
+		>;
+	};
+    
+	pinctrl_gpios: gpiogrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SD2_DATA0_GPIO2_IO15		0x19
+			MX8MM_IOMUXC_ECSPI2_MOSI_GPIO5_IO11		0x19
+			MX8MM_IOMUXC_ECSPI2_MISO_GPIO5_IO12		0x19
+			MX8MM_IOMUXC_ECSPI2_SCLK_GPIO5_IO10		0x19
+			MX8MM_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x19
+			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22		0x19
+			MX8MM_IOMUXC_SD2_DATA1_GPIO2_IO16		0x19
+			MX8MM_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x19
+			MX8MM_IOMUXC_ECSPI2_SCLK_GPIO5_IO10		0x19
+			MX8MM_IOMUXC_ECSPI2_MISO_GPIO5_IO12		0x19
+			MX8MM_IOMUXC_ECSPI2_MOSI_GPIO5_IO11		0x19
+			MX8MM_IOMUXC_SD2_CMD_GPIO2_IO14			0x19
+			MX8MM_IOMUXC_SD2_CD_B_GPIO2_IO12		0x19	
+			MX8MM_IOMUXC_SD2_WP_GPIO2_IO20			0x19
+			MX8MM_IOMUXC_SAI2_MCLK_GPIO4_IO27		0x19
+			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13		0x19
+			MX8MM_IOMUXC_SD2_DATA2_GPIO2_IO17		0x19
+			MX8MM_IOMUXC_SD2_DATA3_GPIO2_IO18		0x19
+			MX8MM_IOMUXC_SD2_CLK_GPIO2_IO13			0x19
+		>;
+	};
+
 };
