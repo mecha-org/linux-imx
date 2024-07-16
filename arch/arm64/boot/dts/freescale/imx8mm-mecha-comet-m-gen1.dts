@@ -197,6 +197,41 @@
 		clock-names = "mclk";
 
 	};
+
+	bq25890: charger@6b {
+		compatible = "ti,bq25890";
+		reg = <0x6b>;
+
+		interrupt-parent = <&gpio1>;
+		interrupts = <16 IRQ_TYPE_EDGE_FALLING>;
+
+		ti,battery-regulation-voltage = <4200000>;
+		ti,charge-current = <2500000>;
+		ti,termination-current = <1024000>;
+		ti,precharge-current = <128000>;
+		ti,minimum-sys-voltage = <3600000>;
+		ti,boost-voltage = <5000000>;
+		ti,boost-max-current = <1000000>;
+
+		ti,use-ilim-pin;
+		ti,thermal-regulation-threshold = <120>;
+	};
+
+	bq27440: fuel-gauge@55 {
+		compatible = "ti,bq27441";
+		reg = <0x55>;
+		monitored-battery = <&bat>;
+		bat: battery {
+			compatible = "simple-battery";
+			device-chemistry = "lithium-ion-polymer";
+
+			energy-full-design-microwatt-hours = <1100000>;
+			charge-full-design-microamp-hours = <3000000>;
+			voltage-min-design-microvolt = <3200000>;
+			voltage-max-design-microvolt = <4200000>;
+			over-voltage-threshold-microvolt = <4500000>;
+		};
+	};
 };
 
 &i2c4 {
