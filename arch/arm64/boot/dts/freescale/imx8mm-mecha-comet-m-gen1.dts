@@ -181,6 +181,37 @@
        };
 };
 
+&i2c2 {
+	clock-frequency = <400000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c2>;
+	status = "okay";
+
+	pcf8563: pcf8563@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+		#clock-cells = <0>;
+	};
+
+	ads1015@49 {
+		compatible = "ti,ads1115";
+		reg = <0x49>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+
+	icm42605@69 {
+		compatible = "invensense,icm42605";
+		pinctrl-0 = <&pinctrl_icm42605>;
+		reg = <0x69>;
+		interrupt-parent = <&gpio3>;
+		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+		// vdd-supply = <&vdd>;
+		// vddio-supply = <&vddio>;
+	};
+
+};
+
 &i2c3 {
 	clock-frequency = <100000>;
 	pinctrl-names = "default";
@@ -376,6 +407,20 @@
 			MX8MM_IOMUXC_SD2_DATA2_GPIO2_IO17		0x19
 			MX8MM_IOMUXC_SD2_DATA3_GPIO2_IO18		0x19
 			MX8MM_IOMUXC_SD2_CLK_GPIO2_IO13			0x19
+		>;
+	};
+
+	pinctrl_i2c2: i2c2grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_I2C2_SCL_I2C2_SCL                          0x400001c3
+			MX8MM_IOMUXC_I2C2_SDA_I2C2_SDA                          0x400001c3
+			MX8MM_IOMUXC_SAI1_MCLK_GPIO4_IO20			0x19
+		>;
+	};
+
+	pinctrl_icm42605: icm_grp {
+		fsl,pins = <
+			MX8MM_IOMUXC_SAI5_MCLK_GPIO3_IO25	0x05
 		>;
 	};
 
