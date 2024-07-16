@@ -3,6 +3,9 @@
 # GPIO infrastructure and drivers
 #
 
+config GPIO_SYSFS
+	default y
+
 config ARCH_HAVE_CUSTOM_GPIO_H
 	bool
 	help

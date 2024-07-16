@@ -1150,3 +1150,9 @@ CONFIG_TOUCHSCREEN_EDT_FT5X06=y
 
 # Camera
 CONFIG_MXC_CAMERA_OV5640_MIPI_V2=m
+
+# Enable sysfs gpio
+# also add in drivers/gpio/Kconfig 
+# config GPIO_SYSFS
+# 	 default y
+CONFIG_GPIO_SYSFS=y
