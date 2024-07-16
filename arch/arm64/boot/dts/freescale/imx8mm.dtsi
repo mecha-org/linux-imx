@@ -1505,7 +1505,7 @@
 	};
 
         gpu: gpu@38000000 {
-		compatible ="fsl,imx8mm-gpu", "fsl,imx6q-gpu";
+		compatible ="fsl,imx8mm-gpu", "fsl,imx6q-gpu", "vivante,gc";
 		reg = <0x0 0x38000000 0x0 0x8000>, <0x0 0x38008000 0x0 0x8000>,
 			<0x0 0x40000000 0x0 0x80000000>, <0x0 0x0 0x0 0x8000000>;
 		reg-names = "iobase_3d", "iobase_2d",
@@ -1520,7 +1520,7 @@
 			<&clk IMX8MM_CLK_GPU2D_ROOT>,
 			<&clk IMX8MM_CLK_GPU_BUS_ROOT>,
 			<&clk IMX8MM_CLK_GPU_AHB>;
-		clock-names = "gpu3d_clk", "gpu3d_shader_clk",
+		clock-names = "core", "gpu3d_shader_clk",
 			  "gpu3d_axi_clk", "gpu3d_ahb_clk",
 			  "gpu2d_clk", "gpu2d_axi_clk",
 			  "gpu2d_ahb_clk";
