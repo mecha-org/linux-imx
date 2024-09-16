@@ -614,12 +614,12 @@ int power_supply_get_battery_info(struct power_supply *psy,
 		 * Proceed to look for a simple battery.
 		 */
 		err = 0;
-
+/*
 	if (strcmp("simple-battery", value)) {
 		err = -ENODEV;
 		goto out_put_node;
 	}
-
+*/
 	info = devm_kzalloc(&psy->dev, sizeof(*info), GFP_KERNEL);
 	if (!info) {
 		err = -ENOMEM;

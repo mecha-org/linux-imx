@@ -882,8 +882,8 @@ static void sec_mipi_dsim_set_main_mode(struct sec_mipi_dsim *dsim)
 	dsim_write(dsim, mdresol, DSIM_MDRESOL);
 
 	mvporch |= MVPORCH_SET_MAINVBP(vmode->vback_porch)    |
-		   MVPORCH_SET_STABLEVFP(vmode->vfront_porch) |
-		   MVPORCH_SET_CMDALLOW(0x0);
+		   MVPORCH_SET_STABLEVFP(vmode->vfront_porch-15) |
+		   MVPORCH_SET_CMDALLOW(0xf);
 	dsim_write(dsim, mvporch, DSIM_MVPORCH);
 
 	bpp = mipi_dsi_pixel_format_to_bpp(dsim->format);

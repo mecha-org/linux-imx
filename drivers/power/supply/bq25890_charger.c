@@ -1308,6 +1308,9 @@ static int bq25890_probe(struct i2c_client *client)
 		goto err_unregister_usb_notifier;
 	}
 
+	/* Charging optimization: setting VINDPM_OFS to 0x08 (800mV) for optimized charging */
+	bq25890_field_write(bq, F_VINDPM_OFS, 0x08);
+
 	ret = devm_request_threaded_irq(dev, client->irq, NULL,
 					bq25890_irq_handler_thread,
 					IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
