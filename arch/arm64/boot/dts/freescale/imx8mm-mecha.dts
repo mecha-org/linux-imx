@@ -35,6 +35,30 @@
 		enable-gpio = <&gpio1 12 GPIO_ACTIVE_LOW>;
 	};
 
+	regulators {
+		reg_usb_otg1_vbus: regulator-usb-otg1 {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_reg_usb1_en>;
+			regulator-name = "USB_1_EN";
+			regulator-max-microvolt = <5000000>;
+			regulator-min-microvolt = <5000000>;
+			gpio = <&gpio5 9 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		reg_usb_otg2_vbus: regulator-usb-otg2 {
+			compatible = "regulator-fixed";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_reg_usb2_en>;
+			regulator-name = "USB_2_EN";
+			regulator-max-microvolt = <5000000>;
+			regulator-min-microvolt = <5000000>;
+			gpio = <&gpio5 8 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+	};
+
 	clk16m: clk16m {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -175,12 +199,14 @@
 };
 
 &usbotg1 {
-	dr_mode = "device";
+	dr_mode = "host";
+	vbus-supply = <&reg_usb_otg1_vbus>;
 	status = "okay";
 };
 
 &usbotg2 {
-	dr_mode = "device";
+	dr_mode = "host";
+	vbus-supply = <&reg_usb_otg2_vbus>;
 	status = "okay";
 };
 
@@ -367,6 +393,18 @@
 		fsl,pins = <
 			// MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10			0x140	/* otg_id */
 			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12			0x19	/* otg_vbus */
+		>;
+	};
+
+	pinctrl_reg_usb1_en: regusb1engrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_ECSPI1_SS0_GPIO5_IO9				0x19
+		>;
+	};
+
+	pinctrl_reg_usb2_en: regusb2engrp {
+		fsl,pins = <
+			MX8MM_IOMUXC_ECSPI1_MISO_GPIO5_IO8				0x19
 		>;
 	};
 
