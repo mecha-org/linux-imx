@@ -113,12 +113,6 @@
 		};
 	};
 
-	pcie0_refclk: pcie0-refclk {
-		status = "disabled";
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <100000000>;
-	};
 };
 
 &fec1 {
@@ -126,10 +120,6 @@
 };
 
 &snvs_rtc {
-	status = "disabled";
-};
-
-&pcie0{
 	status = "disabled";
 };
 
@@ -440,14 +430,6 @@
 	pinctrl_reg_usb2_en: regusb2engrp {
 		fsl,pins = <
 			MX8MM_IOMUXC_ECSPI1_MISO_GPIO5_IO8				0x19
-		>;
-	};
-
-	pinctrl_pcie0: pcie0grp {
-		fsl,pins = <
-			MX8MM_IOMUXC_SAI5_RXD3_GPIO3_IO24			0x61 /* open drain, pull up */
-			MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8			0x19
-			MX8MM_IOMUXC_GPIO1_IO09_GPIO1_IO9			0x19
 		>;
 	};
 	
