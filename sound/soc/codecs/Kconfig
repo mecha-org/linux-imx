@@ -1013,6 +1013,7 @@ config SND_SOC_MAX98088
 
 config SND_SOC_MAX98090
 	tristate
+	default y
 	depends on I2C
 
 config SND_SOC_MAX98095
